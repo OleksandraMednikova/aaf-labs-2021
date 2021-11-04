@@ -62,9 +62,13 @@ class CommandParser():
                 print(SearchCommand(new_line_parts[1]))
                 return ''
             elif len(new_line_parts) > 2:
-                if new_line_parts[2].upper() == 'WHERE' and ((len(new_line_parts) == 4 and len(replace_quotes) == 1) or (len(new_line_parts) == 6 and len(replace_quotes) == 2)):
-                    print(SearchCommand(new_line_parts[1], new_line_parts[3:]))
-                    return ''
+                if new_line_parts[2].upper() == 'WHERE':
+                    if len(new_line_parts) == 4 and len(replace_quotes) == 1:
+                        print(SearchCommand(new_line_parts[1], [replace_quotes[new_line_parts[3]]]))
+                        return ''
+                    elif len(new_line_parts) == 6 and len(replace_quotes) == 2:
+                        print(SearchCommand(new_line_parts[1], [replace_quotes[new_line_parts[3]], new_line_parts[4], replace_quotes[new_line_parts[5]]]))
+                        return ''
             else:
                 print(InvalidCommand())
                 return ''
@@ -87,12 +91,12 @@ class CreateCommand():
         return 'CREATE ' + self.table_name + ';'
 
 class InsertCommand():
-    def __init__(self, table_name, document) -> None:
+    def __init__(self, table_name, document):
         self.table_name = table_name
         self.document = document
     
     def __repr__(self):
-        return 'INSERT ' + self.table_name + ' ' + self.document + ';'
+        return 'INSERT ' + self.table_name + ' ' + '"' + self.document + '"' + ';'
 
 class PrintIndexCommand():
     def __init__(self, table_name):
@@ -125,8 +129,8 @@ class SearchCommand():
         if self.type == 'simple_where':
             return 'SEARCH ' + self.table_name + ';'
         elif self.type == 'one_word_where':
-            return 'SEARCH ' + self.table_name + ' ' + 'WHERE ' + self.word + ';'
+            return 'SEARCH ' + self.table_name + ' ' + 'WHERE ' + '"' + self.word + '"' + ';'
         elif self.type == 'interval_where':
-            return 'SEARCH ' + self.table_name + ' ' + 'WHERE ' + self.words[0] + ' ' + '- ' + self.words[1] + ';'
+            return 'SEARCH ' + self.table_name + ' ' + 'WHERE ' + '"' + self.words[0] + '"' + ' ' + '- ' + '"' + self.words[1] + '"' + ';'
         elif self.type == 'distance_where':
-            return 'SEARCH ' + self.table_name + ' ' + 'WHERE ' + self.words[0] + ' ' + '<' + self.distance + '> ' + self.words[1] + ';'
+            return 'SEARCH ' + self.table_name + ' ' + 'WHERE ' + '"' + self.words[0] + '"' + ' ' + '<' + str(self.distance) + '> ' + '"' + self.words[1] + '"' + ';'
