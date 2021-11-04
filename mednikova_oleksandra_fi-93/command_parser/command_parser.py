@@ -123,7 +123,7 @@ class SearchCommand():
             else:
                 self.type = 'distance_where'
                 self.words = [where_part[0], where_part[2]]
-                self.distance = int(where_part[1][1])
+                self.distance = int(where_part[1][1:-1])
     
     def __repr__(self) -> str:
         if self.type == 'simple_where':
