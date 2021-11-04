@@ -35,49 +35,71 @@ class CommandParser():
 
         if new_line_parts[0].upper() == 'CREATE':
             if len(new_line_parts) == 2 and len(replace_quotes) == 0:
-                return CreateCommand(new_line_parts[1])
+                print(CreateCommand(new_line_parts[1]))
+                return ''
             else:
-                return InvalidCommand()
+                print(InvalidCommand())
+                return ''
 
         if new_line_parts[0].upper() == 'INSERT':
             if len(new_line_parts) == 3 and len(replace_quotes) == 1:
-                return InsertCommand(new_line_parts[1], replace_quotes[new_line_parts[2]])
+                print(InsertCommand(new_line_parts[1], replace_quotes[new_line_parts[2]]))
+                return ''
             else:
-                return InvalidCommand()
+                print(InvalidCommand())
+                return ''
 
         if new_line_parts[0].upper() == 'PRINT_INDEX':
             if len(new_line_parts) == 2 and len(replace_quotes) == 0:
-                return PrintIndexCommand(new_line_parts[1])
+                print(PrintIndexCommand(new_line_parts[1]))
+                return ''
             else:
-                return InvalidCommand()
+                print(InvalidCommand())
+                return ''
 
         if new_line_parts[0].upper() == 'SEARCH':
             if len(new_line_parts) == 2 and len(replace_quotes) == 0:
-                return SearchCommand(new_line_parts[1])
+                print(SearchCommand(new_line_parts[1]))
+                return ''
             elif len(new_line_parts) > 2:
                 if new_line_parts[2].upper() == 'WHERE' and ((len(new_line_parts) == 4 and len(replace_quotes) == 1) or (len(new_line_parts) == 6 and len(replace_quotes) == 2)):
-                    return SearchCommand(new_line_parts[1], new_line_parts[3:])
+                    print(SearchCommand(new_line_parts[1], new_line_parts[3:]))
+                    return ''
             else:
-                return InvalidCommand()
+                print(InvalidCommand())
+                return ''
         
-        return InvalidCommand()
+        print(InvalidCommand())
+        return ''
         
 class InvalidCommand():
     def is_valid():
         return False
+    
+    def __repr__(self):
+        return 'Введені невірні дані!'
 
 class CreateCommand():
     def __init__(self, table_name):
         self.table_name = table_name
 
+    def __repr__(self):
+        return 'CREATE ' + self.table_name + ';'
+
 class InsertCommand():
     def __init__(self, table_name, document) -> None:
         self.table_name = table_name
         self.document = document
+    
+    def __repr__(self):
+        return 'INSERT ' + self.table_name + ' ' + self.document + ';'
 
 class PrintIndexCommand():
     def __init__(self, table_name):
         self.table_name = table_name
+    
+    def __repr__(self):
+        return 'PRINT_INDEX ' + self.table_name + ';'
 
 class SearchCommand():
     def __init__(self, table_name, where_part=None):
@@ -99,3 +121,12 @@ class SearchCommand():
                 self.words = [where_part[0], where_part[2]]
                 self.distance = int(where_part[1][1])
     
+    def __repr__(self) -> str:
+        if self.type == 'simple_where':
+            return 'SEARCH ' + self.table_name + ';'
+        elif self.type == 'one_word_where':
+            return 'SEARCH ' + self.table_name + ' ' + 'WHERE ' + self.word + ';'
+        elif self.type == 'interval_where':
+            return 'SEARCH ' + self.table_name + ' ' + 'WHERE ' + self.words[0] + ' ' + '- ' + self.words[1] + ';'
+        elif self.type == 'distance_where':
+            return 'SEARCH ' + self.table_name + ' ' + 'WHERE ' + self.words[0] + ' ' + '<' + self.distance + '> ' + self.words[1] + ';'

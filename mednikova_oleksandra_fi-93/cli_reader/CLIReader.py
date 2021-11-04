@@ -9,9 +9,6 @@ def CLI_read():
         current_line = input()
         full_line += current_line
 
-        if full_line == '.EXIT':
-            break
-
         for i in range(len(full_line)):
             if full_line[i] == '"':
                 quotes.append(i)
