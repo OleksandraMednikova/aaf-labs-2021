@@ -72,14 +72,15 @@ class Table():
         self.rows.append(document)
         doc_id = len(self.rows) - 1
         words = re.findall('[a-zA-Z0-9_]+', document) 
+        temp = {}
         for word in words:
             if word.lower() not in self.indeces.keys():
                 self.indeces[word.lower()] = {}
+            if word.lower() not in temp:
+                temp[word.lower()] = []
+        for i in range(len(words)):
+            temp[words[i].lower()].append(i)
         for word in words:
-            self.indeces[word.lower()][doc_id] = list(get_indeces(words, word))
+            self.indeces[word.lower()][doc_id] = temp[word.lower()]
         return self.indeces
 
-def get_indeces(lst, wrd):
-    for i, j in enumerate(lst):
-        if j == wrd:
-            yield i
