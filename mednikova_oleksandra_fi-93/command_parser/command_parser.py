@@ -81,7 +81,7 @@ class InvalidCommand():
         return False
     
     def __repr__(self):
-        return 'Введені невірні дані!\n'
+        return 'Input data is not correct!\n'
 
 class CreateCommand():
     def __init__(self, table_name):
