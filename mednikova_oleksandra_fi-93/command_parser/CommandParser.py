@@ -35,7 +35,6 @@ class CommandParser():
 
         if new_line_parts[0].upper() == 'CREATE':
             if len(new_line_parts) == 2 and len(replace_quotes) == 0:
-                print(CreateCommand(new_line_parts[1]))
                 return CreateCommand(new_line_parts[1])
             else:
                 print(InvalidCommand())
@@ -43,7 +42,6 @@ class CommandParser():
 
         if new_line_parts[0].upper() == 'INSERT':
             if len(new_line_parts) == 3 and len(replace_quotes) == 1:
-                print(InsertCommand(new_line_parts[1], replace_quotes[new_line_parts[2]]))
                 return InsertCommand(new_line_parts[1], replace_quotes[new_line_parts[2]])
             else:
                 print(InvalidCommand())
@@ -51,7 +49,6 @@ class CommandParser():
 
         if new_line_parts[0].upper() == 'PRINT_INDEX':
             if len(new_line_parts) == 2 and len(replace_quotes) == 0:
-                print(PrintIndexCommand(new_line_parts[1]))
                 return PrintIndexCommand(new_line_parts[1])
             else:
                 print(InvalidCommand())
@@ -59,15 +56,12 @@ class CommandParser():
 
         if new_line_parts[0].upper() == 'SEARCH':
             if len(new_line_parts) == 2 and len(replace_quotes) == 0:
-                print(SearchCommand(new_line_parts[1]))
                 return SearchCommand(new_line_parts[1])
             elif len(new_line_parts) > 2:
                 if new_line_parts[2].upper() == 'WHERE':
                     if len(new_line_parts) == 4 and len(replace_quotes) == 1:
-                        print(SearchCommand(new_line_parts[1], [replace_quotes[new_line_parts[3]]]))
                         return SearchCommand(new_line_parts[1], [replace_quotes[new_line_parts[3]]])
                     elif len(new_line_parts) == 6 and len(replace_quotes) == 2:
-                        print(SearchCommand(new_line_parts[1], [replace_quotes[new_line_parts[3]], new_line_parts[4], replace_quotes[new_line_parts[5]]]))
                         return SearchCommand(new_line_parts[1], [replace_quotes[new_line_parts[3]], new_line_parts[4], replace_quotes[new_line_parts[5]]])
             else:
                 print(InvalidCommand())

@@ -1,4 +1,4 @@
-from database.db import Database
+from database.Database import Database
 
 def CLI_read():
     full_line = ''
