@@ -66,6 +66,7 @@ class Database():
                             for num in v1:
                                 if (num + self.query.distance) in v2 or (num - self.query.distance) in v2:
                                     result.add(k1)
+                                    break
                     for d_id in result:
                         print('"' + self.tables[self.query.table_name].rows[d_id] + '"')
                     if len(result) != 0:
