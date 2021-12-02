@@ -59,16 +59,17 @@ class Database():
                 if (word_lower1 in self.tables[self.query.table_name].indeces) and (word_lower2 in self.tables[self.query.table_name].indeces):
                     temp_data1 = self.tables[self.query.table_name].indeces.get(word_lower1).data
                     temp_data2 = self.tables[self.query.table_name].indeces.get(word_lower2).data
-                    result = []
+                    result = set()
                     for k1, v1 in temp_data1.items():
                         if k1 in temp_data2.keys():
                             v2 = temp_data2[k1]
                             for num in v1:
                                 if (num + self.query.distance) in v2 or (num - self.query.distance) in v2:
-                                    result.append(k1)
+                                    result.add(k1)
                     for d_id in result:
                         print('"' + self.tables[self.query.table_name].rows[d_id] + '"')
-                    return True
+                    if len(result) != 0:
+                        return True
         else:
             return self.query.table_name
 
@@ -100,7 +101,7 @@ class Database():
             if result is True:
                 print()
             else:
-                print('ERROR: There is no ' + self.query.table_name + ' in the database!\n')
+                print('ERROR: There are no such documents in the database!\n')
 
 class Table():
     def __init__(self, table_name):
@@ -122,6 +123,5 @@ class Table():
             temp[words[i].lower()].append(i)
         for word in words:
             self.indeces.get(word.lower()).data[doc_id] = temp[word.lower()]
-            #self.indeces[word.lower()][doc_id] = temp[word.lower()]
         return self.indeces
 

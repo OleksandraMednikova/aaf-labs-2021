@@ -7,8 +7,10 @@ def CLI_read():
 
     while True:
         current_line = input()
-        full_line += current_line
-
+        if ';' not in current_line:
+            current_line += ' '
+        full_line += current_line 
+        
         for i in range(len(full_line)):
             if full_line[i] == '"':
                 quotes.append(i)
@@ -34,7 +36,7 @@ def CLI_read():
         
         quotes = []
         temp = full_line[f_quote:]
-        if (';' in temp):
+        if ';' in temp:
             semicolon_index = temp.index(';')
             final_line += ' '.join(temp[:semicolon_index+1].split())
             is_query_done = True
